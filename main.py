@@ -286,7 +286,7 @@ if __name__ == "__main__":
         data_dir_path=data_dir_path,
         place="Cubbon park, Bangalore",
         starting_position={"lat": latitude, "long": longitude},
-        shape=SMILEY_FACE,
+        shape=RECTANGLE,
         track_length=500
     )
 
