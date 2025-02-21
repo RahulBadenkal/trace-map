@@ -5,6 +5,22 @@ from shapely import Point, LineString, Polygon, GeometryCollection
 from helpers import normalize_shape
 
 
+def get_line() -> GeometryCollection:
+    shape = GeometryCollection([
+        LineString([(0, 0), (2, 0)]),
+    ])
+    shape = normalize_shape(shape)
+    return shape
+
+
+def get_triangle_shape() -> GeometryCollection:
+    shape = GeometryCollection([
+        LineString([(0, 0), (0, 2), (1, 1), (0, 0)]),
+    ])
+    shape = normalize_shape(shape)
+    return shape
+
+
 def get_rectangle_shape() -> GeometryCollection:
     shape = GeometryCollection([
         LineString([(0, 0), (2, 0), (2, 1), (0, 1), (0, 0)]),
@@ -77,6 +93,10 @@ def get_heart_shape() -> GeometryCollection:
 
     return heart_shape
 
+
+LINE = get_line()
+
+TRIANGLE = get_triangle_shape()
 
 RECTANGLE = get_rectangle_shape()
 

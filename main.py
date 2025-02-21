@@ -179,7 +179,7 @@ def find_best_match(G, shape: GeometryCollection, paths: List[GeometryCollection
     return best_path_index
 
 
-def draw_path_on_graph(G, path, file_path: str, show_direction=False):
+def draw_path_on_graph(G, path, geom, file_path: str, show_direction=False):
     """
     Plot the graph with the candidate path highlighted in red and add arrows along the route.
 
@@ -241,6 +241,19 @@ def draw_path_on_graph(G, path, file_path: str, show_direction=False):
                 arrowprops=arrowprops
             )
 
+    # 3) Display the total route distance as a label in the upper-left corner.
+    total_dist = get_total_length(geom)
+    dist_label = f"Distance: {total_dist:.1f} m"  # Assuming 'length' is in meters
+    ax.text(
+        0.02, 0.98,
+        dist_label,
+        transform=ax.transAxes,
+        color='white',
+        fontsize=12,
+        verticalalignment='top',
+        bbox=dict(boxstyle="round,pad=0.3", fc="black", ec="white", alpha=0.5)
+    )
+
     # Save the figure to disk.
     fig.savefig(file_path, dpi=300)
     plt.close(fig)  # Close the figure to free up memory.
@@ -265,7 +278,7 @@ def main(data_dir_path: str, place: str, starting_position: Dict, shape: Geometr
         print("No match found")
         return
     best_path = all_routes[best_match_index]
-    draw_path_on_graph(G, best_path, os.path.join(data_dir_path, "best_route.png"))
+    draw_path_on_graph(G, best_path, all_route_geoms[best_match_index], os.path.join(data_dir_path, "best_route.png"))
     print(f"Best path index: {best_match_index}")
 
     # Plot the path on graph
@@ -277,16 +290,20 @@ def main(data_dir_path: str, place: str, starting_position: Dict, shape: Geometr
 
 
 if __name__ == "__main__":
-    from sample_shapes import RECTANGLE, SMILEY_FACE, HEART
+    from sample_shapes import LINE, TRIANGLE, RECTANGLE, SMILEY_FACE, HEART
 
     data_dir_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
     latitude = 12 + 58 / 60 + 35.9 / 3600  # 12°58'35.9"N -> 12.9766389
     longitude = 77 + 35 / 60 + 28.2 / 3600  # 77°35'28.2"E -> 77.5911667
+
+    latitude = 12 + 58 / 60 + 34.3 / 3600
+    longitude = 77 + 35 / 60 + 29.0 / 3600
+
     main(
         data_dir_path=data_dir_path,
         place="Cubbon park, Bangalore",
         starting_position={"lat": latitude, "long": longitude},
-        shape=RECTANGLE,
-        track_length=500
+        shape=TRIANGLE,
+        track_length=300
     )
 
